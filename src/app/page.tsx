@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -20,6 +19,7 @@ interface Product {
 export default function Page() {
   const [products, setProducts] = useState<Product[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [form, setForm] = useState<Product>({
     name: "",
     description: "",
@@ -29,6 +29,7 @@ export default function Page() {
     date: "",
   });
 
+  // افزودن ویژگی جدید
   const addFeature = () => {
     setForm({
       ...form,
@@ -36,20 +37,45 @@ export default function Page() {
     });
   };
 
+  // حذف ویژگی
   const removeFeature = (index: number) => {
     const updated = form.features.filter((_, i) => i !== index);
     setForm({ ...form, features: updated });
   };
 
+  // تغییر ویژگی
   const handleFeatureChange = (index: number, field: "key" | "value", value: string) => {
     const updated = [...form.features];
     updated[index][field] = value;
     setForm({ ...form, features: updated });
   };
 
-  const handleAddProduct = () => {
+  // فرمت خودکار تاریخ (۱۴۰۳۰۷۲۵ → ۱۴۰۳/۰۷/۲۵)
+  const handleDateInput = (value: string) => {
+    const digits = value.replace(/\D/g, "");
+    let formatted = digits;
+
+    if (digits.length > 4 && digits.length <= 6)
+      formatted = `${digits.slice(0, 4)}/${digits.slice(4)}`;
+    else if (digits.length > 6)
+      formatted = `${digits.slice(0, 4)}/${digits.slice(4, 6)}/${digits.slice(6, 8)}`;
+
+    setForm({ ...form, date: formatted });
+  };
+
+  // افزودن یا ویرایش محصول
+  const handleAddOrEditProduct = () => {
     if (!form.name || !form.quantity || !form.price) return;
-    setProducts([{ ...form }, ...products]);
+
+    if (editingIndex !== null) {
+      const updated = [...products];
+      updated[editingIndex] = form;
+      setProducts(updated);
+      setEditingIndex(null);
+    } else {
+      setProducts([{ ...form }, ...products]);
+    }
+
     setForm({
       name: "",
       description: "",
@@ -61,38 +87,57 @@ export default function Page() {
     setShowModal(false);
   };
 
-  return (
-    <div className="min-h-screen bg-gray-200 text-white p-8" dir="rtl">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-xl font-bold text-black">اضافه کردن بار جدید</h1>
+  // ویرایش محصول
+  const handleEditProduct = (index: number) => {
+    setForm(products[index]);
+    setEditingIndex(index);
+    setShowModal(true);
+  };
 
+  return (
+    <div className="min-h-screen bg-gray-200 text-gray-900 p-8" dir="rtl">
+      {/* هدر */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-xl font-bold">اضافه کردن بار جدید</h1>
         <div className="flex gap-3">
           <button
-            onClick={() => setShowModal(true)}
-            className="border border-gray-400 rounded-md px-4 py-2 hover:bg-gray-800 bg-gray-800"
+            onClick={() => {
+              setForm({
+                name: "",
+                description: "",
+                features: [],
+                quantity: "",
+                price: "",
+                date: "",
+              });
+              setEditingIndex(null);
+              setShowModal(true);
+            }}
+            className="border border-gray-700 rounded-md px-4 py-2 bg-gray-800 text-white hover:bg-gray-700 transition"
           >
             اضافه کردن محصول
           </button>
-          <button className="border border-gray-400 rounded-md px-4 py-2 hover:bg-gray-800 bg-gray-800">
+          <button className="border border-gray-700 rounded-md px-4 py-2 bg-gray-800 text-white hover:bg-gray-700 transition">
             تکمیل شدن بار جدید
           </button>
         </div>
       </div>
 
+      {/* کارت محصولات */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-right">
         {products.map((p, i) => (
           <div
             key={i}
-            className="bg-gray-900 border border-gray-700 rounded-lg p-4 shadow-md relative group"
+            className="bg-gray-900 text-gray-100 border border-gray-700 rounded-lg p-4 shadow-lg relative group max-w-[500px]"
           >
-            <h2 className="text-lg font-semibold mb-1">{p.name}</h2>
-            <p className="text-sm text-gray-400 mb-2">{p.date || "بدون تاریخ"}</p>
-            <p>تعداد: {p.quantity}</p>
-            <p>قیمت: {p.price} ریال</p>
+            <p className="font-bold">نام محصول : <span className="font-normal">{p.name}</span></p>
+            <p className="font-bold">تاریخ : <span className="font-normal">{p.date || "بدون تاریخ"}</span></p>
+            <p className="font-bold">تعداد : <span className="font-normal">{p.quantity}</span></p>
+            <p className="font-bold">قیمت : <span className="font-normal">{p.price} ریال</span></p>
 
             {p.features.length > 0 && (
               <div className="mt-2">
-                <p className="font-semibold text-sm mb-1">ویژگی‌ها:</p>
+                <p className="font-bold text-sm mb-1">ویژگی‌ها :</p>
                 <ul className="text-sm list-disc pr-4 text-gray-300">
                   {p.features.map((f, fi) => (
                     <li key={fi}>
@@ -107,55 +152,66 @@ export default function Page() {
               <p className="mt-2 text-sm text-gray-400">{p.description}</p>
             )}
 
-            <button
-              onClick={() => setProducts(products.filter((_, idx) => idx !== i))}
-              className="absolute top-2 left-2 text-red-400 hover:text-red-300 opacity-0 group-hover:opacity-100 transition"
-            >
-              ✖
-            </button>
+            {/* دکمه‌های حذف و ویرایش */}
+            <div className="absolute top-2 left-2 flex gap-2 opacity-0 group-hover:opacity-100 transition">
+              <button
+                onClick={() => handleEditProduct(i)}
+                className="text-yellow-400 hover:text-yellow-300"
+              >
+                ✏️
+              </button>
+              <button
+                onClick={() => setProducts(products.filter((_, idx) => idx !== i))}
+                className="text-red-500 hover:text-red-400"
+              >
+                ✖
+              </button>
+            </div>
           </div>
         ))}
       </div>
 
+      {/* مودال */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 animate-fadeIn">
-          <div className="bg-white text-gray-900 rounded-xl shadow-lg w-[500px] max-w-[95%] p-6 space-y-4 relative animate-scaleUp">
+          <div className="bg-white text-gray-900 rounded-xl shadow-lg w-[450px] max-w-[95%] p-5 space-y-4 relative animate-scaleUp">
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-3 left-3 text-gray-500 hover:text-gray-800 text-xl"
+              className="absolute top-3 left-3 text-gray-400 hover:text-gray-700 text-xl"
             >
               ×
             </button>
 
             <h2 className="text-lg font-bold text-center mb-2">
-              اضافه کردن محصول جدید
+              {editingIndex !== null ? "ویرایش محصول" : "اضافه کردن محصول جدید"}
             </h2>
 
             <div>
-              <label className="text-sm font-medium">نام محصول</label>
+              <label className="text-sm font-semibold">نام محصول :</label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1"
+                className="w-full border border-gray-300 bg-white text-gray-900 rounded-md px-3 py-2 mt-1"
               />
             </div>
 
             <div>
-              <label className="text-sm font-medium">توضیحات</label>
+              <label className="text-sm font-semibold">توضیحات :</label>
               <textarea
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 h-20 resize-none"
+                className="w-full border border-gray-300 bg-white text-gray-900 rounded-md px-3 py-2 mt-1 h-20 resize-none"
               />
             </div>
 
+            {/* ویژگی‌ها */}
             <div className="border border-gray-300 rounded-md p-3 space-y-2">
               <div className="flex justify-between items-center">
-                <label className="font-medium text-sm">ویژگی‌ها</label>
+                <label className="font-semibold text-sm">ویژگی‌ها :</label>
                 <button
                   onClick={addFeature}
-                  className="bg-gray-900 text-white px-3 py-1 rounded-md text-sm"
+                  className="bg-gray-800 text-white px-3 py-1 rounded-md text-sm"
                 >
                   +
                 </button>
@@ -170,7 +226,7 @@ export default function Page() {
                     onChange={(e) =>
                       handleFeatureChange(i, "key", e.target.value)
                     }
-                    className="border border-gray-300 rounded-md px-2 py-1 w-1/2"
+                    className="border border-gray-300 bg-white text-gray-900 rounded-md px-2 py-1 w-1/2"
                   />
                   <input
                     type="text"
@@ -179,7 +235,7 @@ export default function Page() {
                     onChange={(e) =>
                       handleFeatureChange(i, "value", e.target.value)
                     }
-                    className="border border-gray-300 rounded-md px-2 py-1 w-1/2"
+                    className="border border-gray-300 bg-white text-gray-900 rounded-md px-2 py-1 w-1/2"
                   />
                   <button
                     onClick={() => removeFeature(i)}
@@ -193,23 +249,35 @@ export default function Page() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-sm font-medium">تعداد</label>
+                <label className="text-sm font-semibold">تعداد :</label>
                 <input
                   type="number"
                   value={form.quantity}
                   onChange={(e) => setForm({ ...form, quantity: e.target.value })}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1"
+                  className="w-full border border-gray-300 bg-white text-gray-900 rounded-md px-3 py-2 mt-1"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">قیمت (ریال)</label>
+                <label className="text-sm font-semibold">قیمت (ریال) :</label>
                 <input
                   type="number"
                   value={form.price}
                   onChange={(e) => setForm({ ...form, price: e.target.value })}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1"
+                  className="w-full border border-gray-300 bg-white text-gray-900 rounded-md px-3 py-2 mt-1"
                 />
               </div>
+            </div>
+
+            {/* تاریخ */}
+            <div>
+              <label className="text-sm font-semibold">تاریخ :</label>
+              <input
+                type="text"
+                placeholder="مثلاً ۱۴۰۳/۰۷/۲۵"
+                value={form.date}
+                onChange={(e) => handleDateInput(e.target.value)}
+                className="w-full border border-gray-300 bg-white text-gray-900 rounded-md px-3 py-2 mt-1 placeholder-gray-400 text-left tracking-wider"
+              />
             </div>
 
             <div className="flex justify-end gap-3 pt-3">
@@ -220,10 +288,10 @@ export default function Page() {
                 بستن
               </button>
               <button
-                onClick={handleAddProduct}
-                className="bg-gray-900 text-white rounded-md px-4 py-2 hover:bg-gray-800"
+                onClick={handleAddOrEditProduct}
+                className="bg-blue-600 text-white rounded-md px-4 py-2 hover:bg-blue-500"
               >
-                اضافه کردن
+                {editingIndex !== null ? "ذخیره تغییرات" : "افزودن محصول"}
               </button>
             </div>
           </div>
@@ -232,22 +300,12 @@ export default function Page() {
 
       <style jsx>{`
         @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
         @keyframes scaleUp {
-          from {
-            transform: scale(0.9);
-            opacity: 0;
-          }
-          to {
-            transform: scale(1);
-            opacity: 1;
-          }
+          from { transform: scale(0.9); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
         }
         .animate-fadeIn {
           animation: fadeIn 0.25s ease-in-out;
@@ -259,3 +317,5 @@ export default function Page() {
     </div>
   );
 }
+
+
