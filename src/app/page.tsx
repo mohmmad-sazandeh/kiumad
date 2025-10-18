@@ -6,8 +6,8 @@ interface Feature {
   key: string;
   value: string;
 }
-
 interface Product {
+  id: string; 
   name: string;
   description: string;
   features: Feature[];
@@ -21,6 +21,7 @@ export default function Page() {
   const [showModal, setShowModal] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [form, setForm] = useState<Product>({
+    id: "",
     name: "",
     description: "",
     features: [],
@@ -29,7 +30,6 @@ export default function Page() {
     date: "",
   });
 
-  // افزودن ویژگی جدید
   const addFeature = () => {
     setForm({
       ...form,
@@ -37,20 +37,17 @@ export default function Page() {
     });
   };
 
-  // حذف ویژگی
   const removeFeature = (index: number) => {
     const updated = form.features.filter((_, i) => i !== index);
     setForm({ ...form, features: updated });
   };
 
-  // تغییر ویژگی
   const handleFeatureChange = (index: number, field: "key" | "value", value: string) => {
     const updated = [...form.features];
     updated[index][field] = value;
     setForm({ ...form, features: updated });
   };
 
-  // فرمت خودکار تاریخ (۱۴۰۳۰۷۲۵ → ۱۴۰۳/۰۷/۲۵)
   const handleDateInput = (value: string) => {
     const digits = value.replace(/\D/g, "");
     let formatted = digits;
@@ -63,7 +60,6 @@ export default function Page() {
     setForm({ ...form, date: formatted });
   };
 
-  // افزودن یا ویرایش محصول
   const handleAddOrEditProduct = () => {
     if (!form.name || !form.quantity || !form.price) return;
 
@@ -73,10 +69,11 @@ export default function Page() {
       setProducts(updated);
       setEditingIndex(null);
     } else {
-      setProducts([{ ...form }, ...products]);
+      setProducts([{ ...form, id: Date.now().toString() }, ...products]);
     }
 
     setForm({
+      id: "",
       name: "",
       description: "",
       features: [],
@@ -87,7 +84,6 @@ export default function Page() {
     setShowModal(false);
   };
 
-  // ویرایش محصول
   const handleEditProduct = (index: number) => {
     setForm(products[index]);
     setEditingIndex(index);
@@ -95,14 +91,14 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-200 text-gray-900 p-8" dir="rtl">
-      {/* هدر */}
+    <div className="min-h-screen bg-gray-100 text-gray-900 p-8" dir="rtl">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-xl font-bold">اضافه کردن بار جدید</h1>
         <div className="flex gap-3">
           <button
             onClick={() => {
               setForm({
+                id: "",
                 name: "",
                 description: "",
                 features: [],
@@ -123,11 +119,10 @@ export default function Page() {
         </div>
       </div>
 
-      {/* کارت محصولات */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-right">
-        {products.map((p, i) => (
+        {products.map((p) => (
           <div
-            key={i}
+            key={p.id}
             className="bg-gray-900 text-gray-100 border border-gray-700 rounded-lg p-4 shadow-lg relative group max-w-[500px]"
           >
             <p className="font-bold">نام محصول : <span className="font-normal">{p.name}</span></p>
@@ -152,16 +147,15 @@ export default function Page() {
               <p className="mt-2 text-sm text-gray-400">{p.description}</p>
             )}
 
-            {/* دکمه‌های حذف و ویرایش */}
             <div className="absolute top-2 left-2 flex gap-2 opacity-0 group-hover:opacity-100 transition">
               <button
-                onClick={() => handleEditProduct(i)}
+                onClick={() => handleEditProduct(products.findIndex(pr => pr.id === p.id))}
                 className="text-yellow-400 hover:text-yellow-300"
               >
                 ✏️
               </button>
               <button
-                onClick={() => setProducts(products.filter((_, idx) => idx !== i))}
+                onClick={() => setProducts(products.filter((pr) => pr.id !== p.id))}
                 className="text-red-500 hover:text-red-400"
               >
                 ✖
@@ -171,7 +165,6 @@ export default function Page() {
         ))}
       </div>
 
-      {/* مودال */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 animate-fadeIn">
           <div className="bg-white text-gray-900 rounded-xl shadow-lg w-[450px] max-w-[95%] p-5 space-y-4 relative animate-scaleUp">
@@ -205,7 +198,6 @@ export default function Page() {
               />
             </div>
 
-            {/* ویژگی‌ها */}
             <div className="border border-gray-300 rounded-md p-3 space-y-2">
               <div className="flex justify-between items-center">
                 <label className="font-semibold text-sm">ویژگی‌ها :</label>
@@ -268,12 +260,11 @@ export default function Page() {
               </div>
             </div>
 
-            {/* تاریخ */}
             <div>
               <label className="text-sm font-semibold">تاریخ :</label>
               <input
                 type="text"
-                placeholder="مثلاً ۱۴۰۳/۰۷/۲۵"
+                placeholder="مثلاً 1404/07/25"
                 value={form.date}
                 onChange={(e) => handleDateInput(e.target.value)}
                 className="w-full border border-gray-300 bg-white text-gray-900 rounded-md px-3 py-2 mt-1 placeholder-gray-400 text-left tracking-wider"
