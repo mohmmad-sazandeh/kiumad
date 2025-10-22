@@ -1,103 +1,175 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./store/store";
+import { addProduct, updateProduct } from "./features/products/productsSlice";
+import { PackageCheck, PlusCircle } from "lucide-react";
+import { Product } from "./types/product";
+import ProductModal from "./components/Modal/ProductModal";
+import ProductCard from "./components/ProductCard/ProductCard";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const dispatch = useDispatch();
+  const products = useSelector((state: RootState) => state.products.list);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const [showModal, setShowModal] = useState(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [form, setForm] = useState<Product>({
+    id: "",
+    name: "",
+    description: "",
+    features: [],
+    quantity: "",
+    price: "",
+    date: "",
+  });
+
+  const addFeature = () => {
+    setForm((prev) => ({
+      ...prev,
+      features: [...prev.features, { key: "", value: "" }],
+    }));
+  };
+
+  const handleFeatureChange = (
+    index: number,
+    field: "key" | "value",
+    value: string
+  ) => {
+    const newFeatures = [...form.features];
+    newFeatures[index][field] = value;
+    setForm({ ...form, features: newFeatures });
+  };
+
+  const removeFeature = (index: number) => {
+    setForm({
+      ...form,
+      features: form.features.filter((_, i) => i !== index),
+    });
+  };
+
+  const handleCompleteNewLoad = async () => {
+    if (!form.name || !form.quantity || !form.price) {
+      alert("لطفاً حداقل نام، تعداد و قیمت محصول را وارد کنید!");
+      return;
+    }
+
+    const newProduct: Product = {
+      id: Date.now().toString(),
+      name: form.name,
+      description: form.description,
+      features: form.features,
+      quantity: form.quantity,
+      price: form.price,
+      date: form.date,
+    };
+
+    try {
+      const res = await fetch("/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newProduct),
+      });
+
+      if (!res.ok) {
+        throw new Error("خطا در ذخیره محصول!");
+      }
+
+      alert("محصول با موفقیت ثبت شد!");
+
+      setForm({
+        id: "",
+        name: "",
+        description: "",
+        features: [],
+        quantity: "",
+        price: "",
+        date: "",
+      });
+
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      alert("خطا در ثبت محصول!");
+    }
+  };
+
+  const handleEditProduct = (index: number) => {
+    setForm(products[index]);
+    setEditingIndex(index);
+    setShowModal(true);
+  };
+
+  console.log(products);
+
+  return (
+    <div className="bg-gray-700 min-h-screen font-sans pb-10">
+      <div className="px-7 flex justify-between gap-4">
+        <div className="flex gap-x-3">
+          <button
+            onClick={handleCompleteNewLoad}
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-2 py-2.5 rounded-xl font-medium shadow-md"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <PackageCheck className="w-3 h-5" /> تکمیل شدن بار جدید
+          </button>
+
+          <button
+            onClick={() => {
+              setForm({
+                id: "",
+                name: "",
+                description: "",
+                features: [],
+                quantity: "",
+                price: "",
+                date: "",
+              });
+              setEditingIndex(null);
+              setShowModal(true);
+            }}
+            className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-2.5 rounded-xl font-medium shadow-md"
           >
-            Read our docs
-          </a>
+            <PlusCircle className="w-3 h-5" />
+            افزودن بار جدید
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      </div>
+
+      {showModal && (
+        <ProductModal
+          onClose={() => setShowModal(false)}
+          onSubmit={(formData: Product) => {
+            if (editingIndex !== null) {
+              dispatch(updateProduct({ index: editingIndex, data: formData }));
+            } else {
+              dispatch(addProduct({ ...formData, id: Date.now().toString() }));
+            }
+            setEditingIndex(null);
+            setShowModal(false);
+          }}
+          form={form}
+          setForm={setForm}
+          editingIndex={editingIndex}
+          addFeature={addFeature}
+          handleFeatureChange={handleFeatureChange}
+          removeFeature={removeFeature}
+        />
+      )}
+
+      <div
+        dir="rtl"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-right p-7"
+      >
+        {products.map((p, idx) => (
+          <ProductCard
+            key={p.id}
+            product={p}
+            index={idx}
+            onEdit={handleEditProduct}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        ))}
+      </div>
     </div>
   );
 }
