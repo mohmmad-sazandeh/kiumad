@@ -4,7 +4,7 @@ import Link from "next/link";
 import { links } from "./constants/navLinks";
 import { usePathname } from "next/navigation";
 
-export default function Home() {
+export default function Header() {
   const pathname = usePathname();
 
   return (

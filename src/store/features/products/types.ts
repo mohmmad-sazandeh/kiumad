@@ -3,7 +3,7 @@ export interface Feature {
   value: string;
 }
 
-export interface Product {
+export interface product {
   id: string;
   name: string;
   description: string;
@@ -11,4 +11,9 @@ export interface Product {
   quantity: string;
   price: string;
   date: string;
+}
+
+export interface productsState {
+  list: product[];
+  form: product;
 }

@@ -1,15 +1,13 @@
-import { useDispatch } from "react-redux";
-import { removeProduct } from "../../features/products/productsSlice";
-import { Product } from "../../types/product";
+import { removeProduct } from "@/store/features/products/productsSlice";
+import { PropsProductCard } from "../types/type";
+import { useAppDispatch } from "@/hooks/useRedux";
 
-interface Props {
-  product: Product;
-  index: number;
-  onEdit: (index: number) => void;
-}
-
-export default function ProductCard({ product, index, onEdit }: Props) {
-  const dispatch = useDispatch();
+export default function ProductCard({
+  product,
+  index,
+  onEdit,
+}: PropsProductCard) {
+  const dispatch = useAppDispatch();
 
   return (
     <div className="bg-gray-900 text-gray-100 border border-gray-700 rounded-lg p-4 shadow-lg relative group max-w-[500px] text-right">

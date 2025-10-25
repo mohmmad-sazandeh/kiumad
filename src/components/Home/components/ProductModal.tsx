@@ -1,34 +1,21 @@
 "use client";
 
 import React from "react";
-import { Product } from "../../types/product";
-import { todayJalali } from "@/app/utils/TodayJalali";
+import { todayJalali } from "@/utils/TodayJalali";
+import { PropsProductModal } from "../types/type";
+import { useAppSelector } from "@/hooks/useRedux";
 
-interface ModalProps {
-  onClose: () => void;
-  onSubmit: (form: Product) => void;
-  form: Product;
-  setForm: React.Dispatch<React.SetStateAction<Product>>;
-  editingIndex: number | null;
-  addFeature: () => void;
-  handleFeatureChange: (
-    index: number,
-    field: "key" | "value",
-    value: string
-  ) => void;
-  removeFeature: (index: number) => void;
-}
-
-const ProductModal: React.FC<ModalProps> = ({
+const ProductModal: React.FC<PropsProductModal> = ({
   onClose,
   onSubmit,
-  form,
-  setForm,
+  onChangeForm,
   editingIndex,
   addFeature,
   handleFeatureChange,
   removeFeature,
 }) => {
+  const { form } = useAppSelector((state) => state.products);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -62,7 +49,7 @@ const ProductModal: React.FC<ModalProps> = ({
             <input
               type="text"
               value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              onChange={(e) => onChangeForm("name", e.target.value)}
               className="w-full border border-gray-300 bg-white text-gray-900 rounded-md px-3 py-2 mt-1"
               required
             />
@@ -72,9 +59,7 @@ const ProductModal: React.FC<ModalProps> = ({
             <label className="text-sm font-semibold">توضیحات :</label>
             <textarea
               value={form.description}
-              onChange={(e) =>
-                setForm({ ...form, description: e.target.value })
-              }
+              onChange={(e) => onChangeForm("description", e.target.value)}
               className="w-full border border-gray-300 bg-white text-gray-900 rounded-md px-3 py-2 mt-1 h-20 resize-none"
             />
           </div>
@@ -128,7 +113,7 @@ const ProductModal: React.FC<ModalProps> = ({
               <input
                 type="number"
                 value={form.quantity}
-                onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+                onChange={(e) => onChangeForm("quantity", e.target.value)}
                 className="border border-gray-300 bg-white text-gray-900 rounded-md px-3 py-2 mt-1"
               />
             </div>
@@ -138,7 +123,7 @@ const ProductModal: React.FC<ModalProps> = ({
               <input
                 type="text"
                 value={form.price}
-                onChange={(e) => setForm({ ...form, price: e.target.value })}
+                onChange={(e) => onChangeForm("price", e.target.value)}
                 className="border border-gray-300 bg-white text-gray-900 rounded-md px-3 py-2 mt-1"
               />
             </div>
