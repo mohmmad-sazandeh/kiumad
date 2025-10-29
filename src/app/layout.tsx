@@ -1,6 +1,6 @@
+import ReduxProviderWrapper from "@/components/ReduxProviderWrapper";
 import "./globals.css";
-import Header from "./components/Headers/Header";
-import ReduxProviderWrapper from "./components/ReduxProviderWrapper";
+import Header from "@/components/Headers/Header";
 
 export const metadata = {
   title: "My App",
