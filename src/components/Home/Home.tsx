@@ -23,6 +23,22 @@ export default function Home() {
   const onChangeForm: updateFormProductFn = (field, value) => {
     dispatch(updateFormProductField({ field, value }));
   };
+
+  const resetForm = () => {
+    const emptyForm = {
+      id: "",
+      name: "",
+      description: "",
+      features: [],
+      quantity: "",
+      price: "",
+      date: "",
+    };
+    (Object.keys(emptyForm) as (keyof typeof emptyForm)[]).forEach((key) =>
+      onChangeForm(key, emptyForm[key])
+    );
+  };
+
   const handleFeatureChange = (
     index: number,
     field: "key" | "value",
@@ -56,21 +72,11 @@ export default function Home() {
         body: JSON.stringify(newProduct),
       });
 
-      if (!res.ok) {
-        throw new Error("خطا در ذخیره محصول!");
-      }
+      if (!res.ok) throw new Error("خطا در ذخیره محصول!");
 
       alert("محصول با موفقیت ثبت شد!");
-
-      onChangeForm("id", "");
-      onChangeForm("name", "");
-      onChangeForm("description", "");
-      onChangeForm("features", []);
-      onChangeForm("quantity", "");
-      onChangeForm("price", "");
-      onChangeForm("date", "");
-
-      window.location.reload();
+      resetForm();
+      dispatch(addProduct(newProduct));
     } catch (error) {
       console.error(error);
       alert("خطا در ثبت محصول!");
@@ -101,13 +107,7 @@ export default function Home() {
 
           <button
             onClick={() => {
-              onChangeForm("id", "");
-              onChangeForm("name", "");
-              onChangeForm("description", "");
-              onChangeForm("features", []);
-              onChangeForm("quantity", "");
-              onChangeForm("price", "");
-              onChangeForm("date", "");
+              resetForm();
               setEditingIndex(null);
               setShowModal(true);
             }}

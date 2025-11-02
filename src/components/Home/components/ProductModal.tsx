@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { todayJalali } from "@/utils/TodayJalali";
 import { PropsProductModal } from "../types/type";
 import { useAppSelector } from "@/hooks/useRedux";
@@ -25,6 +25,22 @@ const ProductModal: React.FC<PropsProductModal> = ({
       onSubmit(form);
     }
   };
+
+  const isFormValid =
+    form.name.trim() !== "" &&
+    form.price.trim() !== "" &&
+    form.quantity.toString().trim() !== "" &&
+    form.features.every(
+      (f: { key: string; value: string }) =>
+        f.key.trim() !== "" && f.value.trim() !== ""
+    );
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
   return (
     <div
@@ -64,7 +80,7 @@ const ProductModal: React.FC<PropsProductModal> = ({
             />
           </div>
 
-          <div className="border border-gray-300 rounded-md p-3 space-y-2">
+          <div className="border border-gray-300 rounded-md p-3 space-y-2 max-h-45 overflow-y-auto">
             <div className="flex justify-between items-center">
               <label className="font-semibold text-sm">ویژگی‌ها :</label>
               <button
@@ -76,35 +92,37 @@ const ProductModal: React.FC<PropsProductModal> = ({
               </button>
             </div>
 
-            {form.features.map((f: any, i: any) => (
-              <div key={i} className="flex gap-2 items-center">
-                <input
-                  type="text"
-                  placeholder="نام ویژگی"
-                  value={f.key}
-                  onChange={(e) =>
-                    handleFeatureChange(i, "key", e.target.value)
-                  }
-                  className="border border-gray-300 bg-white text-gray-900 rounded-md px-2 py-1 w-1/2"
-                />
-                <input
-                  type="text"
-                  placeholder="مقدار"
-                  value={f.value}
-                  onChange={(e) =>
-                    handleFeatureChange(i, "value", e.target.value)
-                  }
-                  className="border border-gray-300 bg-white text-gray-900 rounded-md px-2 py-1 w-1/2"
-                />
-                <button
-                  type="button"
-                  onClick={() => removeFeature(i)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  ✖
-                </button>
-              </div>
-            ))}
+            {form.features.map(
+              (f: { key: string; value: string }, i: number) => (
+                <div key={i} className="flex gap-2 items-center">
+                  <input
+                    type="text"
+                    placeholder="نام ویژگی"
+                    value={f.key}
+                    onChange={(e) =>
+                      handleFeatureChange(i, "key", e.target.value)
+                    }
+                    className="border border-gray-300 bg-white text-gray-900 rounded-md px-2 py-1 w-1/2"
+                  />
+                  <input
+                    type="text"
+                    placeholder="مقدار"
+                    value={f.value}
+                    onChange={(e) =>
+                      handleFeatureChange(i, "value", e.target.value)
+                    }
+                    className="border border-gray-300 bg-white text-gray-900 rounded-md px-2 py-1 w-1/2"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeFeature(i)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    ✖
+                  </button>
+                </div>
+              )
+            )}
           </div>
 
           <div className="flex gap-2">
@@ -131,7 +149,12 @@ const ProductModal: React.FC<PropsProductModal> = ({
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            disabled={!isFormValid}
+            className={`w-full py-2 rounded-md transition ${
+              isFormValid
+                ? "bg-blue-600 text-white hover:bg-blue-700"
+                : "bg-blue-300 text-white cursor-not-allowed"
+            }`}
           >
             ذخیره
           </button>
