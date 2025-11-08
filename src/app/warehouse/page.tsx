@@ -44,7 +44,6 @@ export default function InventoryPage() {
         headers: { "Content-Type": "application/json" },
       });
 
-      // بعد از حذف، دوباره لیست را لود می‌کنیم
       fetchProducts();
       alert("محصول با موفقیت حذف شد!");
     } catch (error) {
@@ -71,7 +70,6 @@ export default function InventoryPage() {
       </div>
     );
   }
-
   console.log(products);
 
   return (

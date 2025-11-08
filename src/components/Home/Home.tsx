@@ -7,11 +7,13 @@ import {
   addProduct,
   updateFormProductField,
   updateProduct,
+  clearProducts,
 } from "@/store/features/products/productsSlice";
 import { product } from "@/store/features/products/types";
 import ProductModal from "./components/ProductModal";
 import ProductCard from "./components/ProductCard";
 import { updateFormProductFn } from "./types/type";
+import { todayJalali } from "@/utils/TodayJalali";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -50,36 +52,31 @@ export default function Home() {
   };
 
   const handleCompleteNewLoad = async () => {
-    if (!form.name || !form.quantity || !form.price) {
-      alert("لطفاً حداقل نام، تعداد و قیمت محصول را وارد کنید!");
+    if (products.length === 0) {
+      alert("هیچ محصولی برای ارسال وجود ندارد!");
       return;
     }
 
-    const newProduct: product = {
-      id: Date.now().toString(),
-      name: form.name,
-      description: form.description,
-      features: form.features,
-      quantity: form.quantity,
-      price: form.price,
-      date: form.date,
+    const warehouse = {
+      name: `انبار-${todayJalali}`,
+      Products: products,
     };
 
     try {
-      const res = await fetch("/api/products", {
+      const res = await fetch("/api/warehouse", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newProduct),
+        body: JSON.stringify(warehouse),
       });
 
-      if (!res.ok) throw new Error("خطا در ذخیره محصول!");
+      if (!res.ok) throw new Error("خطا در ذخیره انبار!");
 
-      alert("محصول با موفقیت ثبت شد!");
+      alert("✅ بار جدید با موفقیت به انبار اضافه شد!");
+      dispatch(clearProducts());
       resetForm();
-      dispatch(addProduct(newProduct));
     } catch (error) {
       console.error(error);
-      alert("خطا در ثبت محصول!");
+      alert("❌ خطا در ثبت انبار!");
     }
   };
 

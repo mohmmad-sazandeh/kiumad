@@ -16,5 +16,6 @@ export const {
   setProducts,
   updateProduct,
   updateFormProductField,
+  clearProducts,
 } = productsSlice.actions;
 export default productsSlice.reducer;
