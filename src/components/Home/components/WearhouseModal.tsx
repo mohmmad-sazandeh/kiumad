@@ -1,0 +1,96 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setNameWarehouse } from "@/store/features/products/productsSlice";
+import { RootState } from "@/store/types/store";
+import { postAddWarehouse } from "../services/service";
+
+interface WarehouseModalProps {
+  isModalOpen: boolean;
+  onClose: () => void;
+  products: any[];
+  resetForm: () => void;
+}
+
+const WarehouseModal = ({
+  isModalOpen,
+  onClose,
+  products,
+  resetForm,
+}: WarehouseModalProps) => {
+  const dispatch = useDispatch();
+  const { nameWarehouse } = useSelector((state: RootState) => state.products);
+  const [loading, setLoading] = useState(false);
+  const [dateTime, setDateTime] = useState("");
+
+  useEffect(() => {
+    if (isModalOpen) {
+      const now = new Date();
+      const shamsiDate = now.toLocaleDateString("fa-IR");
+      const time = now.toLocaleTimeString("fa-IR");
+      setDateTime(`${shamsiDate} - ${time}`);
+      dispatch(setNameWarehouse(`انبار`)); // اسم پیش‌فرض
+    }
+  }, [isModalOpen, dispatch]);
+
+  const handleSubmit = async () => {
+    if (products.length === 0) {
+      alert("هیچ محصولی برای ارسال وجود ندارد!");
+      return;
+    }
+
+    setLoading(true);
+    await postAddWarehouse({
+      warehouse: { name: nameWarehouse, dateTime, Products: products },
+      dispatch,
+      resetForm,
+    });
+    setLoading(false);
+    onClose();
+  };
+
+  return (
+    isModalOpen && (
+      <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+        <div className="p-5 rounded-2xl shadow-md bg-white w-[350px] flex flex-col gap-3">
+          <h2 className="text-lg font-bold text-center">🗃 افزودن به انبار</h2>
+
+          <input
+            type="text"
+            value={nameWarehouse}
+            onChange={(e) => dispatch(setNameWarehouse(e.target.value))}
+            placeholder="نام انبار را وارد کنید..."
+            className="border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <div className="text-sm text-gray-500 text-center mt-1">
+            {dateTime}
+          </div>
+
+          <div className="flex justify-between mt-3">
+            <button
+              onClick={onClose}
+              className="bg-gray-300 text-black px-4 py-2 rounded-lg hover:bg-gray-400"
+            >
+              انصراف
+            </button>
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className={`px-4 py-2 rounded-lg text-white font-semibold ${
+                loading
+                  ? "bg-gray-400"
+                  : "bg-blue-600 hover:bg-blue-700 transition"
+              }`}
+            >
+              {loading ? "در حال ثبت..." : "✅ ثبت انبار"}
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  );
+};
+
+export default WarehouseModal;

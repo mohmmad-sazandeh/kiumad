@@ -2,6 +2,15 @@
   import { product, productsState } from "./types";
 
   export const productReducers = {
+
+    setNameWarehouse : (state : productsState , action:PayloadAction<string>)=>{
+      state.nameWarehouse = action.payload
+    },
+
+    setWarehouseDateTime: (state: productsState, action: PayloadAction<string>) => {
+  state.warehouseDateTime = action.payload;
+},
+
     addProduct: (state: productsState, action: PayloadAction<product>) => {
       state.list.push(action.payload);
     },

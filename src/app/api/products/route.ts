@@ -45,9 +45,7 @@ export async function DELETE(req: NextRequest) {
     const data = fs.readFileSync(dbFile, "utf-8");
     const json = JSON.parse(data);
 
-    json.Products = json.Products.filter(
-      (p: any) => String(p.id) !== String(id)
-    );
+    json.Products = json.Products.filter((p: any) => String(p.id) !== String(id));
 
     fs.writeFileSync(dbFile, JSON.stringify(json, null, 2));
 

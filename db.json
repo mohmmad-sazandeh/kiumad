@@ -1,107 +1,136 @@
 {
   "Products": [
     {
-      "id": "1762603533352",
-      "name": "salam",
-      "description": "salam mohamadm",
-      // "features": [
-      //   {
-      //     "key": "w",
-      //     "value": "q"
-      //   }
-      // ],
-      "features":{
-        "w":"q",
-        "x":"qw"
-      }
+      "id": "1762679858054",
+      "name": "nsdaasd",
+      "description": "asdlnalsdn",
+      "features": [],
+      "quantity": "123",
+      "price": "123123",
+      "date": "۱۴۰۴/۰۸/۱۸"
+    },
+    {
+      "id": "1762679922258",
+      "name": "asdas",
+      "description": "sdasd",
+      "features": [],
+      "quantity": "123123",
+      "price": "123123",
+      "date": "۱۴۰۴/۰۸/۱۸"
+    },
+    {
+      "id": "1762680678150",
+      "name": "asdasd",
+      "description": "asdasd",
+      "features": [],
+      "quantity": "22",
+      "price": "22",
+      "date": "۱۴۰۴/۰۸/۱۸"
+    },
+    {
+      "id": "1762681997735",
+      "name": "mmd",
+      "description": "sadasd",
+      "features": [],
+      "quantity": "12312",
+      "price": "213123",
+      "date": "۱۴۰۴/۰۸/۱۸"
+    },
+    {
+      "id": "1762682009095",
+      "name": "ajz",
+      "description": "asdasd",
+      "features": [],
       "quantity": "11",
-      "price": "12000000",
-      "date": "۱۴۰۴/۰۸/۱۷"
-    },
-    {
-      "id": "1762609537877",
-      "name": "vxv",
-      "description": "gfg",
-      "features": [
-        {
-          "key": "fd",
-          "value": "43"
-        }
-      ],
-      "quantity": "543",
-      "price": "54",
-      "date": "۱۴۰۴/۰۸/۱۷"
-    },
-    {
-      "id": "1762609537877",
-      "name": "vxv",
-      "description": "gfg",
-      "features": [
-        {
-          "key": "fd",
-          "value": "43"
-        }
-      ],
-      "quantity": "543",
-      "price": "54",
-      "date": "۱۴۰۴/۰۸/۱۷"
+      "price": "213123",
+      "date": "۱۴۰۴/۰۸/۱۸"
     }
   ],
   "Warehouses": [
     {
-      "name": "انبار-۱۴۰۴/۰۸/۱۷",
+      "name": "salam",
+      "dateTime": "۱۴۰۴/۸/۱۸ - ۱۲:۴۷:۴۸",
       "Products": [
         {
-          "id": "1762603533352",
-          "name": "salam",
-          "description": "salam mohamadm",
-          "features": [
-            {
-              "key": "w",
-              "value": "q"
-            }
-          ],
+          "id": "1762679858054",
+          "name": "nsdaasd",
+          "description": "asdlnalsdn",
+          "features": [],
+          "quantity": "123",
+          "price": "123123",
+          "date": "۱۴۰۴/۰۸/۱۸"
+        },
+        {
+          "id": "1762679867595",
+          "name": "sadasd",
+          "description": "qqqq",
+          "features": [],
+          "quantity": "22",
+          "price": "123123",
+          "date": "۱۴۰۴/۰۸/۱۸"
+        }
+      ]
+    },
+    {
+      "name": "انبارxcxsd",
+      "dateTime": "۱۴۰۴/۸/۱۸ - ۱۲:۴۸:۴۲",
+      "Products": [
+        {
+          "id": "1762679922258",
+          "name": "asdas",
+          "description": "sdasd",
+          "features": [],
+          "quantity": "123123",
+          "price": "123123",
+          "date": "۱۴۰۴/۰۸/۱۸"
+        }
+      ]
+    },
+    {
+      "name": "انبار",
+      "dateTime": "۱۴۰۴/۸/۱۸ - ۱۳:۰۱:۱۹",
+      "Products": [
+        {
+          "id": "1762680678150",
+          "name": "asdasd",
+          "description": "asdasd",
+          "features": [],
+          "quantity": "22",
+          "price": "22",
+          "date": "۱۴۰۴/۰۸/۱۸"
+        }
+      ]
+    },
+    {
+      "name": "paradise",
+      "dateTime": "۱۴۰۴/۸/۱۸ - ۱۳:۲۳:۴۰",
+      "Products": [
+        {
+          "id": "1762681997735",
+          "name": "mmd",
+          "description": "sadasd",
+          "features": [],
+          "quantity": "12312",
+          "price": "213123",
+          "date": "۱۴۰۴/۰۸/۱۸"
+        },
+        {
+          "id": "1762682009095",
+          "name": "ajz",
+          "description": "asdasd",
+          "features": [],
           "quantity": "11",
-          "price": "12000000",
-          "date": "۱۴۰۴/۰۸/۱۷"
-        }
-      ]
-    },
-    {
-      "name": "انبار-۱۴۰۴/۰۸/۱۷",
-      "Products": [
+          "price": "213123",
+          "date": "۱۴۰۴/۰۸/۱۸"
+        },
         {
-          "id": "1762609537877",
-          "name": "vxv",
-          "description": "gfg",
-          "features": [
-            {
-              "key": "fd",
-              "value": "43"
-            }
-          ],
-          "quantity": "543",
-          "price": "54",
-          "date": "۱۴۰۴/۰۸/۱۷"
-        }
-      ]
-    },
-    {
-      "name": "انبار-۱۴۰۴/۰۸/۱۷",
-      "Products": [
-        {
-          "id": "1762609537877",
-          "name": "vxv",
-          "description": "gfg",
-          "features": [
-            {
-              "key": "fd",
-              "value": "43"
-            }
-          ],
-          "quantity": "543",
-          "price": "54",
-          "date": "۱۴۰۴/۰۸/۱۷"
+          "id": "1762682018091",
+          "name": "rjb",
+          "description": "adasd",
+          "features": [],
+          "quantity": "123",
+          "price": "123123",
+          "date": "۱۴۰۴/۰۸/۱۸"
         }
       ]
     }

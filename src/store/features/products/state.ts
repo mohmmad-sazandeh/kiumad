@@ -1,6 +1,8 @@
 import { productsState } from "./types";
 
 export const productsinitialState: productsState = {
+warehouseDateTime: "",
+  nameWarehouse : "",
   list: [],
   form: {
     id: "",

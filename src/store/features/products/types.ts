@@ -14,6 +14,8 @@ export interface product {
 }
 
 export interface productsState {
+  warehouseDateTime : string,
+  nameWarehouse : string,
   list: product[];
   form: product;
 }

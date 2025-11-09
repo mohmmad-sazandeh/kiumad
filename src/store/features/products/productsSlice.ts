@@ -11,6 +11,8 @@ const productsSlice = createSlice({
 });
 
 export const {
+  setWarehouseDateTime,
+  setNameWarehouse,
   addProduct,
   removeProduct,
   setProducts,

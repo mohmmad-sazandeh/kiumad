@@ -11,15 +11,17 @@ import {
 import { product } from "@/store/features/products/types";
 import ProductModal from "./components/ProductModal";
 import ProductCard from "./components/ProductCard";
+import WarehouseModal from "./components/WearhouseModal";
 import { updateFormProductFn } from "./types/type";
-import { todayJalali } from "@/utils/TodayJalali";
-import { postAddWarehouse } from "./services/service";
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const { list: products } = useAppSelector((state) => state.products);
+  const { list: products, nameWarehouse } = useAppSelector(
+    (state) => state.products
+  );
 
   const [showModal, setShowModal] = useState(false);
+  const [warehouseModalOpen, setWarehouseModalOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   const onChangeForm: updateFormProductFn = (field, value) => {
@@ -27,7 +29,7 @@ export default function Home() {
   };
 
   const resetForm = () => {
-    const emptyForm = {
+    const emptyForm: product = {
       id: "",
       name: "",
       description: "",
@@ -36,27 +38,22 @@ export default function Home() {
       price: "",
       date: "",
     };
-    (Object.keys(emptyForm) as (keyof typeof emptyForm)[]).forEach((key) =>
+    (Object.keys(emptyForm) as (keyof product)[]).forEach((key) =>
       onChangeForm(key, emptyForm[key])
     );
   };
 
-  const handleCompleteNewLoad = () => {
+  const handleOpenWarehouseModal = () => {
     if (products.length === 0) {
       alert("هیچ محصولی برای ارسال وجود ندارد!");
       return;
     }
-
-    const warehouse = {
-      name: `انبار-${todayJalali}`,
-      Products: products,
-    };
-
-    postAddWarehouse({ warehouse, dispatch, resetForm });
+    setWarehouseModalOpen(true);
   };
 
   const handleEditProduct = (index: number) => {
-    for (const [key, value] of Object.entries(products[index]) as [
+    const prod = products[index];
+    for (const [key, value] of Object.entries(prod) as [
       keyof product,
       product[keyof product]
     ][]) {
@@ -71,7 +68,7 @@ export default function Home() {
       <div className="px-7 flex justify-between gap-4">
         <div className="flex gap-x-3">
           <button
-            onClick={handleCompleteNewLoad}
+            onClick={handleOpenWarehouseModal}
             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-2 py-2.5 rounded-xl font-medium shadow-md"
           >
             <PackageCheck className="w-3 h-5" /> تکمیل شدن بار جدید
@@ -90,6 +87,15 @@ export default function Home() {
           </button>
         </div>
       </div>
+
+      {warehouseModalOpen && (
+        <WarehouseModal
+          isModalOpen={warehouseModalOpen}
+          onClose={() => setWarehouseModalOpen(false)}
+          products={products}
+          resetForm={resetForm}
+        />
+      )}
 
       {showModal && (
         <ProductModal
