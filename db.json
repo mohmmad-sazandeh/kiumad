@@ -4,14 +4,46 @@
       "id": "1762603533352",
       "name": "salam",
       "description": "salam mohamadm",
-      "features": [
-        {
-          "key": "w",
-          "value": "q"
-        }
-      ],
+      // "features": [
+      //   {
+      //     "key": "w",
+      //     "value": "q"
+      //   }
+      // ],
+      "features":{
+        "w":"q",
+        "x":"qw"
+      }
       "quantity": "11",
       "price": "12000000",
+      "date": "۱۴۰۴/۰۸/۱۷"
+    },
+    {
+      "id": "1762609537877",
+      "name": "vxv",
+      "description": "gfg",
+      "features": [
+        {
+          "key": "fd",
+          "value": "43"
+        }
+      ],
+      "quantity": "543",
+      "price": "54",
+      "date": "۱۴۰۴/۰۸/۱۷"
+    },
+    {
+      "id": "1762609537877",
+      "name": "vxv",
+      "description": "gfg",
+      "features": [
+        {
+          "key": "fd",
+          "value": "43"
+        }
+      ],
+      "quantity": "543",
+      "price": "54",
       "date": "۱۴۰۴/۰۸/۱۷"
     }
   ],
@@ -31,6 +63,44 @@
           ],
           "quantity": "11",
           "price": "12000000",
+          "date": "۱۴۰۴/۰۸/۱۷"
+        }
+      ]
+    },
+    {
+      "name": "انبار-۱۴۰۴/۰۸/۱۷",
+      "Products": [
+        {
+          "id": "1762609537877",
+          "name": "vxv",
+          "description": "gfg",
+          "features": [
+            {
+              "key": "fd",
+              "value": "43"
+            }
+          ],
+          "quantity": "543",
+          "price": "54",
+          "date": "۱۴۰۴/۰۸/۱۷"
+        }
+      ]
+    },
+    {
+      "name": "انبار-۱۴۰۴/۰۸/۱۷",
+      "Products": [
+        {
+          "id": "1762609537877",
+          "name": "vxv",
+          "description": "gfg",
+          "features": [
+            {
+              "key": "fd",
+              "value": "43"
+            }
+          ],
+          "quantity": "543",
+          "price": "54",
           "date": "۱۴۰۴/۰۸/۱۷"
         }
       ]

@@ -24,7 +24,4 @@
       const { field, value } = action.payload;
       state.form[field] = value;
     },
-     clearProducts: (state: productsState) => {
-    state.list = [];
-    },
   };

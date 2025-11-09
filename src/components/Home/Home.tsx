@@ -7,7 +7,7 @@ import {
   addProduct,
   updateFormProductField,
   updateProduct,
-  clearProducts,
+  setProducts,
 } from "@/store/features/products/productsSlice";
 import { product } from "@/store/features/products/types";
 import ProductModal from "./components/ProductModal";
@@ -72,7 +72,8 @@ export default function Home() {
       if (!res.ok) throw new Error("خطا در ذخیره انبار!");
 
       alert("✅ بار جدید با موفقیت به انبار اضافه شد!");
-      dispatch(clearProducts());
+      // dispatch(clearProducts());
+      dispatch(setProducts([]));
       resetForm();
     } catch (error) {
       console.error(error);
