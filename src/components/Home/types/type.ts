@@ -9,15 +9,7 @@ export interface PropsProductCard {
 export interface PropsProductModal {
   onClose: () => void;
   onSubmit: (form: product) => void;
-  onChangeForm: updateFormProductFn;
   editingIndex: number | null;
-  addFeature: () => void;
-  handleFeatureChange: (
-    index: number,
-    field: "key" | "value",
-    value: string
-  ) => void;
-  removeFeature: (index: number) => void;
 }
 
 export type updateFormProductFn = <T extends keyof product>(

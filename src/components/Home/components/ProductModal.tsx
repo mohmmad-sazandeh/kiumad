@@ -2,19 +2,23 @@
 
 import React, { useEffect } from "react";
 import { todayJalali } from "@/utils/TodayJalali";
-import { PropsProductModal } from "../types/type";
-import { useAppSelector } from "@/hooks/useRedux";
+import { PropsProductModal, updateFormProductFn } from "../types/type";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { updateFormProductField } from "@/store/features/products/productsSlice";
+import { isFormValid } from "../services/isFormValid";
 
 const ProductModal: React.FC<PropsProductModal> = ({
   onClose,
   onSubmit,
-  onChangeForm,
   editingIndex,
-  addFeature,
-  handleFeatureChange,
-  removeFeature,
 }) => {
+  const dispatch = useAppDispatch();
+
   const { form } = useAppSelector((state) => state.products);
+
+  const onChangeForm: updateFormProductFn = (field, value) => {
+    dispatch(updateFormProductField({ field, value }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,21 +30,22 @@ const ProductModal: React.FC<PropsProductModal> = ({
     }
   };
 
-  const isFormValid =
-    form.name.trim() !== "" &&
-    form.price.trim() !== "" &&
-    form.quantity.toString().trim() !== "" &&
-    form.features.every(
-      (f: { key: string; value: string }) =>
-        f.key.trim() !== "" && f.value.trim() !== ""
-    );
-
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "auto";
     };
   }, []);
+
+  const handleFeatureChange = (
+    index: number,
+    field: "key" | "value",
+    value: string
+  ) => {
+    const newFeatures = [...form.features];
+    newFeatures[index] = { ...newFeatures[index], [field]: value };
+    onChangeForm("features", newFeatures);
+  };
 
   return (
     <div
@@ -85,7 +90,12 @@ const ProductModal: React.FC<PropsProductModal> = ({
               <label className="font-semibold text-sm">ویژگی‌ها :</label>
               <button
                 type="button"
-                onClick={addFeature}
+                onClick={() =>
+                  onChangeForm("features", [
+                    ...form.features,
+                    { key: "", value: "" },
+                  ])
+                }
                 className="bg-gray-800 text-white px-3 py-1 rounded-md text-sm"
               >
                 +
@@ -115,7 +125,12 @@ const ProductModal: React.FC<PropsProductModal> = ({
                   />
                   <button
                     type="button"
-                    onClick={() => removeFeature(i)}
+                    onClick={() =>
+                      onChangeForm(
+                        "features",
+                        form.features.filter((_, index) => index !== i)
+                      )
+                    }
                     className="text-red-500 hover:text-red-700"
                   >
                     ✖
@@ -149,9 +164,9 @@ const ProductModal: React.FC<PropsProductModal> = ({
 
           <button
             type="submit"
-            disabled={!isFormValid}
+            disabled={!isFormValid(form)}
             className={`w-full py-2 rounded-md transition ${
-              isFormValid
+              isFormValid(form)
                 ? "bg-blue-600 text-white hover:bg-blue-700"
                 : "bg-blue-300 text-white cursor-not-allowed"
             }`}

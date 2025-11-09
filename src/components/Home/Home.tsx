@@ -7,17 +7,17 @@ import {
   addProduct,
   updateFormProductField,
   updateProduct,
-  clearProducts,
 } from "@/store/features/products/productsSlice";
 import { product } from "@/store/features/products/types";
 import ProductModal from "./components/ProductModal";
 import ProductCard from "./components/ProductCard";
 import { updateFormProductFn } from "./types/type";
 import { todayJalali } from "@/utils/TodayJalali";
+import { postAddWarehouse } from "./services/service";
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const { list: products, form } = useAppSelector((state) => state.products);
+  const { list: products } = useAppSelector((state) => state.products);
 
   const [showModal, setShowModal] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -41,17 +41,7 @@ export default function Home() {
     );
   };
 
-  const handleFeatureChange = (
-    index: number,
-    field: "key" | "value",
-    value: string
-  ) => {
-    const newFeatures = [...form.features];
-    newFeatures[index] = { ...newFeatures[index], [field]: value };
-    onChangeForm("features", newFeatures);
-  };
-
-  const handleCompleteNewLoad = async () => {
+  const handleCompleteNewLoad = () => {
     if (products.length === 0) {
       alert("هیچ محصولی برای ارسال وجود ندارد!");
       return;
@@ -62,22 +52,7 @@ export default function Home() {
       Products: products,
     };
 
-    try {
-      const res = await fetch("/api/warehouse", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(warehouse),
-      });
-
-      if (!res.ok) throw new Error("خطا در ذخیره انبار!");
-
-      alert("✅ بار جدید با موفقیت به انبار اضافه شد!");
-      dispatch(clearProducts());
-      resetForm();
-    } catch (error) {
-      console.error(error);
-      alert("❌ خطا در ثبت انبار!");
-    }
+    postAddWarehouse({ warehouse, dispatch, resetForm });
   };
 
   const handleEditProduct = (index: number) => {
@@ -128,18 +103,7 @@ export default function Home() {
             setEditingIndex(null);
             setShowModal(false);
           }}
-          onChangeForm={onChangeForm}
           editingIndex={editingIndex}
-          addFeature={() =>
-            onChangeForm("features", [...form.features, { key: "", value: "" }])
-          }
-          handleFeatureChange={handleFeatureChange}
-          removeFeature={(index) =>
-            onChangeForm(
-              "features",
-              form.features.filter((_, i) => i !== index)
-            )
-          }
         />
       )}
 
