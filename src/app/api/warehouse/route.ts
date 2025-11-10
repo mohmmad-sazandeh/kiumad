@@ -49,14 +49,22 @@ export async function POST(req: Request) {
   }
 }
 
-export async function DELETE(req: any) {
+export async function DELETE(req: Request) {
   try {
-    const id = req.nextUrl.searchParams.get("id");
-    if (!id) return NextResponse.json({ error: "ID محصول مشخص نشده" }, { status: 400 });
+    // گرفتن id از query
+    const url = new URL(req.url);
+    const id = url.searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ error: "ID محصول مشخص نشده" }, { status: 400 });
+    }
 
+    // خواندن db.json
     const data = fs.readFileSync(dbFile, "utf-8");
-    let json = JSON.parse(data);
+    const json = JSON.parse(data);
 
+    if (!Array.isArray(json.Warehouses)) json.Warehouses = [];
+
+    // حذف محصول از هر انبار
     json.Warehouses = json.Warehouses
       .map((w: any) => ({
         ...w,
@@ -64,6 +72,7 @@ export async function DELETE(req: any) {
       }))
       .filter((w: any) => w.Products.length > 0); // حذف انبارهای خالی
 
+    // نوشتن مجدد فایل
     fs.writeFileSync(dbFile, JSON.stringify(json, null, 2));
 
     return NextResponse.json({ message: "✅ محصول و انبار خالی حذف شدند" });
@@ -72,5 +81,4 @@ export async function DELETE(req: any) {
     return NextResponse.json({ error: "خطا در حذف محصول و انبار" }, { status: 500 });
   }
 }
-
 

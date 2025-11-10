@@ -44,6 +44,60 @@
       "quantity": "11",
       "price": "213123",
       "date": "۱۴۰۴/۰۸/۱۸"
+    },
+    {
+      "id": "1762693044444",
+      "name": "mag",
+      "description": ".",
+      "features": [],
+      "quantity": "100",
+      "price": "120000",
+      "date": "۱۴۰۴/۰۸/۱۸"
+    },
+    {
+      "id": "1762693070711",
+      "name": "mag",
+      "description": ".",
+      "features": [],
+      "quantity": "150",
+      "price": "50000",
+      "date": "۱۴۰۴/۰۸/۱۸"
+    },
+    {
+      "id": "1762765701381",
+      "name": "شسی",
+      "description": "شسیش",
+      "features": [],
+      "quantity": "23213",
+      "price": "2131",
+      "date": "۱۴۰۴/۰۸/۱۸"
+    },
+    {
+      "id": "1762766091893",
+      "name": "asdsad",
+      "description": "dasdasd",
+      "features": [],
+      "quantity": "23213",
+      "price": "3123",
+      "date": "۱۴۰۴/۰۸/۱۹"
+    },
+    {
+      "id": "1762770471650",
+      "name": "asdsad",
+      "description": "sdasad",
+      "features": [],
+      "quantity": "1123",
+      "price": "123",
+      "date": "۱۴۰۴/۰۸/۱۹"
+    },
+    {
+      "id": "1762772051332",
+      "name": "dd",
+      "description": "",
+      "features": [],
+      "quantity": "231",
+      "price": "3213",
+      "date": "۱۴۰۴/۰۸/۱۹"
     }
   ],
   "Warehouses": [
@@ -51,15 +105,6 @@
       "name": "salam",
       "dateTime": "۱۴۰۴/۸/۱۸ - ۱۲:۴۷:۴۸",
       "Products": [
-        {
-          "id": "1762679858054",
-          "name": "nsdaasd",
-          "description": "asdlnalsdn",
-          "features": [],
-          "quantity": "123",
-          "price": "123123",
-          "date": "۱۴۰۴/۰۸/۱۸"
-        },
         {
           "id": "1762679867595",
           "name": "sadasd",
@@ -113,24 +158,90 @@
           "quantity": "12312",
           "price": "213123",
           "date": "۱۴۰۴/۰۸/۱۸"
-        },
+        }
+      ]
+    },
+    {
+      "name": "انبار دانشگاه",
+      "dateTime": "۱۴۰۴/۸/۱۸ - ۱۶:۲۷:۵۳",
+      "Products": [
         {
-          "id": "1762682009095",
-          "name": "ajz",
-          "description": "asdasd",
+          "id": "1762693044444",
+          "name": "mag",
+          "description": ".",
           "features": [],
-          "quantity": "11",
-          "price": "213123",
+          "quantity": "100",
+          "price": "120000",
           "date": "۱۴۰۴/۰۸/۱۸"
         },
         {
-          "id": "1762682018091",
-          "name": "rjb",
-          "description": "adasd",
+          "id": "1762693070711",
+          "name": "mag",
+          "description": ".",
           "features": [],
-          "quantity": "123",
-          "price": "123123",
+          "quantity": "150",
+          "price": "50000",
           "date": "۱۴۰۴/۰۸/۱۸"
+        }
+      ]
+    },
+    {
+      "name": "انبار",
+      "dateTime": "۱۴۰۴/۸/۱۹ - ۱۲:۳۸:۲۲",
+      "Products": [
+        {
+          "id": "1762765701381",
+          "name": "شسی",
+          "description": "شسیش",
+          "features": [],
+          "quantity": "23213",
+          "price": "2131",
+          "date": "۱۴۰۴/۰۸/۱۸"
+        }
+      ]
+    },
+    {
+      "name": "انبار",
+      "dateTime": "۱۴۰۴/۸/۱۹ - ۱۲:۴۴:۵۹",
+      "Products": [
+        {
+          "id": "1762766091893",
+          "name": "asdsad",
+          "description": "dasdasd",
+          "features": [],
+          "quantity": "23213",
+          "price": "3123",
+          "date": "۱۴۰۴/۰۸/۱۹"
+        }
+      ]
+    },
+    {
+      "name": "انبار",
+      "dateTime": "۱۴۰۴/۸/۱۹ - ۱۳:۵۷:۵۳",
+      "Products": [
+        {
+          "id": "1762770471650",
+          "name": "asdsad",
+          "description": "sdasad",
+          "features": [],
+          "quantity": "1123",
+          "price": "123",
+          "date": "۱۴۰۴/۰۸/۱۹"
+        }
+      ]
+    },
+    {
+      "name": "انبار33",
+      "dateTime": "۱۴۰۴/۸/۱۹ - ۱۴:۲۴:۱۳",
+      "Products": [
+        {
+          "id": "1762772051332",
+          "name": "dd",
+          "description": "",
+          "features": [],
+          "quantity": "231",
+          "price": "3213",
+          "date": "۱۴۰۴/۰۸/۱۹"
         }
       ]
     }

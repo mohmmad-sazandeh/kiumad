@@ -9,9 +9,8 @@ import {
   updateProduct,
 } from "@/store/features/products/productsSlice";
 import { product } from "@/store/features/products/types";
-import ProductModal from "./components/ProductModal";
+import CommonModal from "./components/ModalWrapper"; // ✅ مودال مشترک
 import ProductCard from "./components/ProductCard";
-import WarehouseModal from "./components/WearhouseModal";
 import { updateFormProductFn } from "./types/type";
 
 export default function Home() {
@@ -20,8 +19,8 @@ export default function Home() {
     (state) => state.products
   );
 
-  const [showModal, setShowModal] = useState(false);
-  const [warehouseModalOpen, setWarehouseModalOpen] = useState(false);
+  const [showProductModal, setShowProductModal] = useState(false);
+  const [showWarehouseModal, setShowWarehouseModal] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   const onChangeForm: updateFormProductFn = (field, value) => {
@@ -48,7 +47,7 @@ export default function Home() {
       alert("هیچ محصولی برای ارسال وجود ندارد!");
       return;
     }
-    setWarehouseModalOpen(true);
+    setShowWarehouseModal(true);
   };
 
   const handleEditProduct = (index: number) => {
@@ -60,11 +59,11 @@ export default function Home() {
       onChangeForm(key, value);
     }
     setEditingIndex(index);
-    setShowModal(true);
+    setShowProductModal(true);
   };
 
   return (
-    <div className="bg-gray-700 min-h-screen font-sans pb-10">
+    <div className="bg-gray-700 font-sans pb-10">
       <div className="px-7 flex justify-between gap-4">
         <div className="flex gap-x-3">
           <button
@@ -78,7 +77,7 @@ export default function Home() {
             onClick={() => {
               resetForm();
               setEditingIndex(null);
-              setShowModal(true);
+              setShowProductModal(true);
             }}
             className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-2.5 rounded-xl font-medium shadow-md"
           >
@@ -88,30 +87,34 @@ export default function Home() {
         </div>
       </div>
 
-      {warehouseModalOpen && (
-        <WarehouseModal
-          isModalOpen={warehouseModalOpen}
-          onClose={() => setWarehouseModalOpen(false)}
-          products={products}
-          resetForm={resetForm}
-        />
-      )}
+      {/* ✅ مودال محصول */}
+      <CommonModal
+        type="product"
+        isOpen={showProductModal}
+        onClose={() => {
+          setShowProductModal(false);
+          setEditingIndex(null);
+        }}
+        onSubmit={(formData: product) => {
+          if (editingIndex !== null) {
+            dispatch(updateProduct({ index: editingIndex, data: formData }));
+          } else {
+            dispatch(addProduct({ ...formData, id: Date.now().toString() }));
+          }
+          setEditingIndex(null);
+          setShowProductModal(false);
+        }}
+        editingIndex={editingIndex}
+      />
 
-      {showModal && (
-        <ProductModal
-          onClose={() => setShowModal(false)}
-          onSubmit={(formData: product) => {
-            if (editingIndex !== null) {
-              dispatch(updateProduct({ index: editingIndex, data: formData }));
-            } else {
-              dispatch(addProduct({ ...formData, id: Date.now().toString() }));
-            }
-            setEditingIndex(null);
-            setShowModal(false);
-          }}
-          editingIndex={editingIndex}
-        />
-      )}
+      {/* ✅ مودال انبار */}
+      <CommonModal
+        type="warehouse"
+        isOpen={showWarehouseModal}
+        onClose={() => setShowWarehouseModal(false)}
+        products={products}
+        resetForm={resetForm}
+      />
 
       <div
         dir="rtl"

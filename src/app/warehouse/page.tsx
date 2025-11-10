@@ -61,26 +61,15 @@ export default function WarehousePage() {
     setProducts(warehouse?.Products || []);
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("آیا مطمئن هستید می‌خواهید این محصول را حذف کنید؟")) return;
-
+  const deleteProduct = async (id: string) => {
     try {
-      const res = await fetch(`/api/warehouses?id=${id}`, {
+      const res = await fetch(`/api/warehouse?id=${id}`, {
         method: "DELETE",
       });
 
-      if (!res.ok) throw new Error("خطا در حذف محصول");
+      window.location.reload();
 
-      if (selectedWarehouse) {
-        const updatedProducts = selectedWarehouse.Products.filter(
-          (p) => p.id !== id
-        );
-        setSelectedWarehouse({
-          ...selectedWarehouse,
-          Products: updatedProducts,
-        });
-        setProducts(updatedProducts);
-      }
+      if (!res.ok) throw new Error("خطا در حذف محصول!");
 
       alert("✅ محصول با موفقیت حذف شد!");
     } catch (err) {
@@ -90,7 +79,7 @@ export default function WarehousePage() {
   };
 
   return (
-    <div className="min-h-screen px-8 py-6 bg-gray-900" dir="rtl">
+    <div className="px-8 py-6" dir="rtl">
       <h1 className="text-3xl text-white font-bold mb-6">انبار</h1>
 
       <div className="mb-6">
@@ -100,7 +89,7 @@ export default function WarehousePage() {
         <select
           value={selectedWarehouse?.id || ""}
           onChange={(e) => handleWarehouseChange(e.target.value)}
-          className="w-full sm:w-auto rounded-lg bg-gray-700 text-white px-4 py-2 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          className="w-full sm:w-auto rounded-lg bg-gray-500 text-white px-4 py-2 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
         >
           <option value="" className="text-gray-300">
             لطفاً انبار را انتخاب کنید
@@ -150,7 +139,7 @@ export default function WarehousePage() {
                     </span>
                   </p>
                   <button
-                    onClick={() => handleDelete(p.id)}
+                    onClick={() => deleteProduct(p.id)}
                     className="mt-2 bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 transition"
                   >
                     حذف محصول
