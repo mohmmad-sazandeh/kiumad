@@ -21,13 +21,10 @@ interface Warehouse {
 
 export default function WarehousePage() {
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
-  const [selectedWarehouse, setSelectedWarehouse] = useState<Warehouse | null>(
-    null
-  );
+  const [selectedWarehouse, setSelectedWarehouse] = useState<Warehouse | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // گرفتن لیست انبارها
   const fetchWarehouses = async () => {
     setLoading(true);
     try {
@@ -67,10 +64,14 @@ export default function WarehousePage() {
         method: "DELETE",
       });
 
-      window.location.reload();
-
       if (!res.ok) throw new Error("خطا در حذف محصول!");
 
+      await fetchWarehouses();
+      if (selectedWarehouse) {
+        const updated = warehouses.find((w) => w.id === selectedWarehouse.id) || null;
+        setSelectedWarehouse(updated);
+        setProducts(updated?.Products || []);
+      }
       alert("✅ محصول با موفقیت حذف شد!");
     } catch (err) {
       console.error(err);
@@ -79,27 +80,31 @@ export default function WarehousePage() {
   };
 
   return (
-    <div className="px-8 py-6" dir="rtl">
-      <h1 className="text-3xl text-white font-bold mb-6">انبار</h1>
+    <div className="px-8 py-4" dir="rtl">
+      
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl text-white font-bold">
+          {selectedWarehouse ? `محصولات  ${selectedWarehouse.name}` : "انتخاب انبار"}
+        </h1>
+      </div>
 
-      <div className="mb-6">
-        <label className="text-white font-semibold mr-3 ml-4">
-          انتخاب انبار:
-        </label>
-        <select
-          value={selectedWarehouse?.id || ""}
-          onChange={(e) => handleWarehouseChange(e.target.value)}
-          className="w-full sm:w-auto rounded-lg bg-gray-500 text-white px-4 py-2 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-        >
-          <option value="" className="text-gray-300">
-            لطفاً انبار را انتخاب کنید
-          </option>
-          {warehouses.map((w) => (
-            <option key={w.id} value={w.id} className="text-black">
-              {w.name}
-            </option>
-          ))}
-        </select>
+      <div className="flex overflow-x-auto gap-4 mb-6 pb-3 scrollbar-thin scrollbar-thumb-gray-600">
+        {warehouses.map((w) => (
+          <button
+            key={w.id}
+            onClick={() => handleWarehouseChange(w.id)}
+            className={`
+              min-w-[220px] px-5 py-3 rounded-xl shadow-lg border text-right transition-all
+              ${selectedWarehouse?.id === w.id
+                ? "bg-blue-600 text-white border-blue-400 scale-105"
+                : "bg-gray-700 text-gray-200 border-gray-600 hover:bg-gray-600"
+              }
+            `}
+          >
+            <div className="text-lg font-bold">{w.name}</div>
+            <div className="text-sm text-gray-300 mt-1">{w.dateTime}</div>
+          </button>
+        ))}
       </div>
 
       {loading ? (
@@ -110,39 +115,58 @@ export default function WarehousePage() {
             هیچ محصولی در این انبار موجود نیست.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((p) => (
               <div
                 key={p.id}
-                className="group relative border border-gray-700 rounded-xl bg-gray-800 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+                className="
+                  relative border border-gray-700 rounded-xl bg-gray-800 p-5 shadow-md
+                  max-w-[360px] min-h-[220px] w-full
+                  flex flex-col justify-between
+                "
               >
-                <div className="relative z-10 space-y-2">
-                  <h3 className="font-bold text-lg text-white group-hover:text-blue-400 transition-colors">
-                    نام محصول: {p.name}
-                  </h3>
-                  <p className="text-gray-300">توضیحات: {p.description}</p>
-                  <p className="text-gray-300">تعداد: {p.quantity}</p>
-                  <p className="text-gray-300 font-medium">
-                    قیمت: <span className="text-green-500">{p.price} ریال</span>
-                  </p>
-                  <p className="text-gray-300 font-medium">
-                    تاریخ: <span className="text-green-500">{p.date}</span>
-                  </p>
-                  <p className="text-gray-300 font-medium">
-                    ویژگی‌ها:{" "}
-                    <span className="text-green-500">
-                      {p?.features?.map((f, idx) => (
-                        <span key={idx} className="mr-2">
-                          {f.key}: {f.value}
-                        </span>
-                      ))}
-                    </span>
-                  </p>
+                <div>
+                  <h3 className="text-base font-bold text-white mb-3">نام: <span className="font-normal">{p.name}</span></h3>
+
+                  <div className="space-y-2 text-sm text-gray-300">
+                    <p>توضیحات: <span className="font-normal text-gray-300">{p.description || "-"}</span></p>
+                    <p>تعداد: <span className="font-normal text-gray-300">{p.quantity}</span></p>
+                    <p>قیمت: <span className="font-normal text-green-500">{p.price} ریال</span></p>
+                    <p>تاریخ: <span className="font-normal text-green-500">{p.date || "-"}</span></p>
+                    <p>
+                      ویژگی‌ها:{" "}
+                      <span className="font-normal text-green-500">
+                        {p?.features && p.features.length > 0
+                          ? p.features.map((f, idx) => (
+                              <span key={idx} className="mr-2">
+                                {f.key}: {f.value}
+                              </span>
+                            ))
+                          : "-"}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex justify-center items-center gap-4">
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById(`card-${p.id}`);
+                      if (el) {
+                        el.classList.add("ring-2", "ring-yellow-400");
+                        setTimeout(() => el.classList.remove("ring-2", "ring-yellow-400"), 700);
+                      }
+                    }}
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-1 rounded-md"
+                  >
+                    ویرایش
+                  </button>
+
                   <button
                     onClick={() => deleteProduct(p.id)}
-                    className="mt-2 bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 transition"
+                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-md"
                   >
-                    حذف محصول
+                    حذف
                   </button>
                 </div>
               </div>
