@@ -34,7 +34,7 @@ export default function CommonModal({
         <ProductForm
           onSubmit={onSubmit!}
           onClose={onClose}
-          editingIndex={editingIndex ?? null} // 👈 این خط مشکل رو حل می‌کنه
+          editingIndex={editingIndex ?? null} 
         />
       ) : (
         <WarehouseForm

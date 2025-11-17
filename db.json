@@ -98,24 +98,97 @@
       "quantity": "231",
       "price": "3213",
       "date": "۱۴۰۴/۰۸/۱۹"
+    },
+    {
+      "id": "1763194837270",
+      "name": "ماگ",
+      "description": ".",
+      "features": [],
+      "quantity": "12",
+      "price": "12",
+      "date": "۱۴۰۴/۰۸/۲۴"
+    },
+    {
+      "id": "1763360473955",
+      "name": ".",
+      "description": "",
+      "features": [],
+      "quantity": "1",
+      "price": "1",
+      "date": "۱۴۰۴/۰۸/۲۶"
+    },
+    {
+      "id": "1763361105284",
+      "name": "ماگ",
+      "description": "غعلفغب",
+      "features": [
+        {
+          "key": "رنگ",
+          "value": "ابی"
+        }
+      ],
+      "quantity": "150",
+      "price": "15000",
+      "date": "۱۴۰۴/۰۸/۲۶"
+    },
+    {
+      "id": "1763361166012",
+      "name": "لیوان شیشه ای",
+      "description": "خهعهلفغیث",
+      "features": [
+        {
+          "key": "تعداد در کارتن",
+          "value": "10"
+        }
+      ],
+      "quantity": "100",
+      "price": "50000",
+      "date": "۱۴۰۴/۰۸/۲۶"
+    },
+    {
+      "id": "1763361192992",
+      "name": "قاشق",
+      "description": "ذارفغبیثسصش",
+      "features": [
+        {
+          "key": "جنس",
+          "value": "استیل"
+        }
+      ],
+      "quantity": "70",
+      "price": "78000",
+      "date": "۱۴۰۴/۰۸/۲۶"
+    },
+    {
+      "id": "1763361232786",
+      "name": "کاسه",
+      "description": "اغعرقفزقی",
+      "features": [
+        {
+          "key": "جنس",
+          "value": "شیشه"
+        }
+      ],
+      "quantity": "50",
+      "price": "25000",
+      "date": "۱۴۰۴/۰۸/۲۶"
+    },
+    {
+      "id": "1763361257998",
+      "name": "ماگ",
+      "description": "بطشظسطیزبرلذادت",
+      "features": [
+        {
+          "key": "رنگ",
+          "value": "قرمز"
+        }
+      ],
+      "quantity": "230",
+      "price": "4500",
+      "date": "۱۴۰۴/۰۸/۲۶"
     }
   ],
   "Warehouses": [
-    {
-      "name": "salam",
-      "dateTime": "۱۴۰۴/۸/۱۸ - ۱۲:۴۷:۴۸",
-      "Products": [
-        {
-          "id": "1762679867595",
-          "name": "sadasd",
-          "description": "qqqq",
-          "features": [],
-          "quantity": "22",
-          "price": "123123",
-          "date": "۱۴۰۴/۰۸/۱۸"
-        }
-      ]
-    },
     {
       "name": "انبارxcxsd",
       "dateTime": "۱۴۰۴/۸/۱۸ - ۱۲:۴۸:۴۲",
@@ -242,6 +315,106 @@
           "quantity": "231",
           "price": "3213",
           "date": "۱۴۰۴/۰۸/۱۹"
+        }
+      ]
+    },
+    {
+      "name": "انبار سعدی",
+      "dateTime": "۱۴۰۴/۸/۲۴ - ۱۱:۵۰:۳۸",
+      "Products": [
+        {
+          "id": "1763194837270",
+          "name": "ماگ",
+          "description": ".",
+          "features": [],
+          "quantity": "12",
+          "price": "12",
+          "date": "۱۴۰۴/۰۸/۲۴"
+        }
+      ]
+    },
+    {
+      "name": "انبار سازنده",
+      "dateTime": "۱۴۰۴/۸/۲۶ - ۱۰:۰۴:۲۱",
+      "Products": [
+        {
+          "id": "1763360473955",
+          "name": ".",
+          "description": "",
+          "features": [],
+          "quantity": "1",
+          "price": "1",
+          "date": "۱۴۰۴/۰۸/۲۶"
+        },
+        {
+          "id": "1763361105284",
+          "name": "ماگ",
+          "description": "غعلفغب",
+          "features": [
+            {
+              "key": "رنگ",
+              "value": "ابی"
+            }
+          ],
+          "quantity": "150",
+          "price": "15000",
+          "date": "۱۴۰۴/۰۸/۲۶"
+        },
+        {
+          "id": "1763361166012",
+          "name": "لیوان شیشه ای",
+          "description": "خهعهلفغیث",
+          "features": [
+            {
+              "key": "تعداد در کارتن",
+              "value": "10"
+            }
+          ],
+          "quantity": "100",
+          "price": "50000",
+          "date": "۱۴۰۴/۰۸/۲۶"
+        },
+        {
+          "id": "1763361192992",
+          "name": "قاشق",
+          "description": "ذارفغبیثسصش",
+          "features": [
+            {
+              "key": "جنس",
+              "value": "استیل"
+            }
+          ],
+          "quantity": "70",
+          "price": "78000",
+          "date": "۱۴۰۴/۰۸/۲۶"
+        },
+        {
+          "id": "1763361232786",
+          "name": "کاسه",
+          "description": "اغعرقفزقی",
+          "features": [
+            {
+              "key": "جنس",
+              "value": "شیشه"
+            }
+          ],
+          "quantity": "50",
+          "price": "25000",
+          "date": "۱۴۰۴/۰۸/۲۶"
+        },
+        {
+          "id": "1763361257998",
+          "name": "ماگ",
+          "description": "بطشظسطیزبرلذادت",
+          "features": [
+            {
+              "key": "رنگ",
+              "value": "قرمز"
+            }
+          ],
+          "quantity": "230",
+          "price": "4500",
+          "date": "۱۴۰۴/۰۸/۲۶"
         }
       ]
     }

@@ -9,7 +9,7 @@ import {
   updateProduct,
 } from "@/store/features/products/productsSlice";
 import { product } from "@/store/features/products/types";
-import CommonModal from "./components/ModalWrapper"; // ✅ مودال مشترک
+import CommonModal from "./components/ModalWrapper"; 
 import ProductCard from "./components/ProductCard";
 import { updateFormProductFn } from "./types/type";
 
@@ -87,7 +87,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ✅ مودال محصول */}
       <CommonModal
         type="product"
         isOpen={showProductModal}
@@ -107,7 +106,6 @@ export default function Home() {
         editingIndex={editingIndex}
       />
 
-      {/* ✅ مودال انبار */}
       <CommonModal
         type="warehouse"
         isOpen={showWarehouseModal}

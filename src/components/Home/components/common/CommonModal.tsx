@@ -6,7 +6,7 @@ interface ModalWrapperProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  width?: string; // برای تنظیم عرض مودال
+  width?: string;             
 }
 
 const ModalWrapper: React.FC<ModalWrapperProps> = ({
@@ -16,7 +16,6 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({
   width = "w-[400px]",
 }) => {
   useEffect(() => {
-    // جلوگیری از اسکرول هنگام باز بودن مودال
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
