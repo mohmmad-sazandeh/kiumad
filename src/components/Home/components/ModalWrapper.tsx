@@ -1,7 +1,6 @@
 "use client";
 
-
-import ModalWrapper from "./common/CommonModal";
+import ModalWrapper from "../../common/CommonModal";
 import ProductForm from "./ProductForm";
 import WarehouseForm from "./WarehouseForm";
 
