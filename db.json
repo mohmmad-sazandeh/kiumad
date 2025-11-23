@@ -199,21 +199,6 @@
   ],
   "Warehouses": [
     {
-      "name": "انبارxcxsd",
-      "dateTime": "۱۴۰۴/۸/۱۸ - ۱۲:۴۸:۴۲",
-      "Products": [
-        {
-          "id": "1762679922258",
-          "name": "asdas",
-          "description": "sdasd",
-          "features": [],
-          "quantity": "123123",
-          "price": "123123",
-          "date": "۱۴۰۴/۰۸/۱۸"
-        }
-      ]
-    },
-    {
       "name": "انبار",
       "dateTime": "۱۴۰۴/۸/۱۸ - ۱۳:۰۱:۱۹",
       "Products": [
@@ -229,21 +214,6 @@
       ]
     },
     {
-      "name": "paradise",
-      "dateTime": "۱۴۰۴/۸/۱۸ - ۱۳:۲۳:۴۰",
-      "Products": [
-        {
-          "id": "1762681997735",
-          "name": "mmd",
-          "description": "sadasd",
-          "features": [],
-          "quantity": "12312",
-          "price": "213123",
-          "date": "۱۴۰۴/۰۸/۱۸"
-        }
-      ]
-    },
-    {
       "name": "انبار دانشگاه",
       "dateTime": "۱۴۰۴/۸/۱۸ - ۱۶:۲۷:۵۳",
       "Products": [
@@ -254,15 +224,6 @@
           "features": [],
           "quantity": "100",
           "price": "120000",
-          "date": "۱۴۰۴/۰۸/۱۸"
-        },
-        {
-          "id": "1762693070711",
-          "name": "mag",
-          "description": ".",
-          "features": [],
-          "quantity": "150",
-          "price": "50000",
           "date": "۱۴۰۴/۰۸/۱۸"
         }
       ]
@@ -318,12 +279,13 @@
       "Products": [
         {
           "id": "1762772051332",
-          "name": "dd",
+          "name": "salamaaaaa",
           "description": "",
           "features": [],
           "quantity": "231",
           "price": "3213",
-          "date": "۱۴۰۴/۰۸/۱۹"
+          "date": "۱۴۰۴/۰۸/۱۹",
+          "warehouseId": "انبار33-5"
         }
       ]
     },
@@ -357,7 +319,7 @@
         },
         {
           "id": "1763361166012",
-          "name": "لیوان شیشه ای",
+          "name": "لیوان شیشه ایdd",
           "description": "خهعهلفغیث",
           "features": [
             {
@@ -367,35 +329,8 @@
           ],
           "quantity": "100",
           "price": "50000",
-          "date": "۱۴۰۴/۰۸/۲۶"
-        },
-        {
-          "id": "1763361232786",
-          "name": "کاسه",
-          "description": "اغعرقفزقی",
-          "features": [
-            {
-              "key": "جنس",
-              "value": "شیشه"
-            }
-          ],
-          "quantity": "50",
-          "price": "25000",
-          "date": "۱۴۰۴/۰۸/۲۶"
-        },
-        {
-          "id": "1763361257998",
-          "name": "ماگ",
-          "description": "بطشظسطیزبرلذادت",
-          "features": [
-            {
-              "key": "رنگ",
-              "value": "قرمز"
-            }
-          ],
-          "quantity": "230",
-          "price": "4500",
-          "date": "۱۴۰۴/۰۸/۲۶"
+          "date": "۱۴۰۴/۰۸/۲۶",
+          "warehouseId": "انبار سازنده-7"
         }
       ]
     },

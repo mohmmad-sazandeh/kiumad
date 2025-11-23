@@ -78,3 +78,67 @@ export async function DELETE(req: Request) {
   }
 }
 
+
+export async function PUT(req: Request) {
+  try {
+    const updatedProduct = await req.json();
+    const { id } = updatedProduct;
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "شناسه محصول ارسال نشده است" },
+        { status: 400 }
+      );
+    }
+
+    const data = fs.readFileSync(dbFile, "utf-8");
+    const json = JSON.parse(data);
+
+    if (!Array.isArray(json.Warehouses)) {
+      return NextResponse.json(
+        { error: "هیچ انباری وجود ندارد" },
+        { status: 404 }
+      );
+    }
+
+    let found = false;
+
+    json.Warehouses = json.Warehouses.map((warehouse: any) => {
+      if (!Array.isArray(warehouse.Products)) return warehouse;
+
+      warehouse.Products = warehouse.Products.map((p: any) => {
+        if (String(p.id) === String(id)) {
+          found = true;
+          return {
+            ...p,
+            ...updatedProduct,
+            date: p.date,
+          };
+        }
+        return p;
+      });
+
+      return warehouse;
+    });
+
+    if (!found) {
+      return NextResponse.json(
+        { error: "محصول موردنظر یافت نشد" },
+        { status: 404 }
+      );
+    }
+
+    fs.writeFileSync(dbFile, JSON.stringify(json, null, 2));
+
+    return NextResponse.json({
+      message: "✔ محصول با موفقیت ویرایش شد",
+      product: updatedProduct,
+    });
+  } catch (err) {
+    console.error("❌ PUT Error:", err);
+    return NextResponse.json(
+      { error: "خطا در ویرایش محصول" },
+      { status: 500 }
+    );
+  }
+}
