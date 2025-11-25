@@ -1,10 +1,15 @@
-import { BadgeQuestionMark, PackageCheck, PlusCircle } from "lucide-react";
+import {
+  BadgeQuestionMark,
+  Info,
+  PackageCheck,
+  PlusCircle,
+} from "lucide-react";
 
 export const links = [
   {
-    href: "/test1",
-    label: "تست ",
-    icon: <BadgeQuestionMark className="w-4 h-4" />,
+    href: "/about",
+    label: "درباره ما",
+    icon: <Info className="w-4 h-4" />,
   },
   {
     href: "/test2",
